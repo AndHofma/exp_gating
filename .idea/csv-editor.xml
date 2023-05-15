@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="C:\Users\Andrea Hofmann\OneDrive\PhD\exp_cognitive-test-battery\MET\wav_file_names.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\randomization_lists\randomized_practice_stimuli.csv">
           <value>
             <Attribute>
