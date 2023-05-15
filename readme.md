@@ -75,5 +75,5 @@ To start and run the experiment, follow these steps:
 ## 8. Experiment-Start
 * First, a small dialogue window will appear. 
 * Enter the subject id and press "OK". 
-* The results will be recorded in the file "gating_*phase*_results\_*SUBJECT_ID*\_*timestamp*.csv" in the "**results**" folder.
-* The randomization lists will be stored in the file "randomized_*phase*_stimuli.csv" and "randomized_*phase*_stimuli.pkl" in the "**randomization_lists**" folder.
+* The results will be recorded in the file "gating_*phase*_results\_*subject_ID*\_*timestamp*.csv" in the "**results**" folder.
+* The randomization lists will be stored in the file "randomized_*phase*\_stimuli.csv" and "randomized_*phase*\_stimuli.pkl" in the "**randomization_lists**" folder.
