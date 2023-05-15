@@ -1,12 +1,12 @@
 # Instructions
 begin = """
-Willkommen zum Verständnis Experiment \n
+Willkommen zum Verständnis-Experiment \n
 Sie hören nachfolgend Aufnahmen der Ihnen bekannten Namenssequenzen: 
-"(Mimmi und Moni und Lola)" oder "(Mimmi und Moni) und Lola" etc.
+(Mimmi und Moni und Lola) / (Mimmi und Moni) und Lola usw.
 Die Namenssequenzen sind unterschiedlich lang.
 Das heißt, Sie hören z.B. nur: "Mi", "Mimmi und" oder "Mimmi und Mo"
-Nach jeder Sequenz sehen Sie die beiden bekannten Piktogramme.
-Bitte entscheiden Sie dann, welches Piktogramm am besten zur Sequenz passt, die Sie gehört haben.
+und gleich danach sehen Sie die beiden bekannten Piktogramme.
+Bitte entscheiden Sie, welches Piktogramm am besten zur Sequenz passt, die Sie gehört haben.
 Drücken Sie den entsprechenen Button auf der Buttonbox. \n  
 Drücken Sie nun einen Button, um zu den Übungsbeispielen zu gelangen."""
 
