@@ -8,13 +8,14 @@ def get_participant_info():
     Returns a dictionary with the entered information.
     """
     exp_data = {
+        'experiment': 'gating_experiment',
         'cur_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         'Subject_ID': 'subject_ID'
     }
     # Dialogue box to get participant information
     info_dialog = gui.DlgFromDict(dictionary=exp_data,
-                                  title='Musical Ear Test',
-                                  fixed=['cur_date']
+                                  title='Gating Experiment',
+                                  fixed=['experiment','cur_date']
                                   )
 
     if info_dialog.OK:
@@ -102,6 +103,7 @@ def append_result_to_csv(result, practice_filename, test_filename, participant_i
 
     with open(output_filename, 'a') as output_file:
         output_file.write(
+            f"{participant_info['experiment']},"
             f"{participant_info['Subject_ID']},"
             f"{participant_info['cur_date']},"
             f"{result['trial']},"

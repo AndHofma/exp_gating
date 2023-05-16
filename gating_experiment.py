@@ -100,7 +100,7 @@ test_output_filename = os.path.join(results_path,
 for output_file in [practice_output_filename, test_output_filename]:
     with open(output_file, 'w') as file:
         file.write(
-            'Subject_ID,Date,trial,phase,stimulus,response,accuracy,speaker,gate,name_stim,condition,bracket_pic_position,nobracket_pic_position,start_time,end_time,duration \n'
+            'experiment,subject_ID,date,trial,phase,stimulus,response,accuracy,speaker,gate,name_stim,condition,bracket_pic_position,nobracket_pic_position,start_time,end_time,duration \n'
         )
 
 # Show instructions
@@ -133,8 +133,9 @@ for stimulus_file in randomized_practice_stimuli:
 
     # Store trial data
     results.append({
-        'Subject_ID': participant_info['Subject_ID'],
-        'Date': participant_info['cur_date'],
+        'experiment': participant_info['experiment'],
+        'subject_ID': participant_info['Subject_ID'],
+        'date': participant_info['cur_date'],
         'trial': trial_counter,
         'phase': 'practice',
         'stimulus': stimulus_file,
@@ -180,8 +181,9 @@ for stimulus_file in randomized_test_stimuli:
 
     # Store trial data
     results.append({
-        'Subject_ID': participant_info['Subject_ID'],
-        'Date': participant_info['cur_date'],
+        'experiment': participant_info['experiment'],
+        'subject_ID': participant_info['Subject_ID'],
+        'date': participant_info['cur_date'],
         'trial': trial_counter,
         'phase': 'test',
         'stimulus': stimulus_file,
