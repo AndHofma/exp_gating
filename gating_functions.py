@@ -4,13 +4,13 @@ import datetime
 
 def get_participant_info():
     """
-    Open a dialogue box with 2 fields: current date and time, and subject_ID.
+    Open a dialogue box with 3 fields: current date and time, subject_ID and experiment name.
     Returns a dictionary with the entered information.
     """
     exp_data = {
         'experiment': 'gating_experiment',
         'cur_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-        'Subject_ID': 'subject_ID'
+        'subject': 'subject_ID'
     }
     # Dialogue box to get participant information
     info_dialog = gui.DlgFromDict(dictionary=exp_data,
@@ -104,7 +104,7 @@ def append_result_to_csv(result, practice_filename, test_filename, participant_i
     with open(output_filename, 'a') as output_file:
         output_file.write(
             f"{participant_info['experiment']},"
-            f"{participant_info['Subject_ID']},"
+            f"{participant_info['subject']},"
             f"{participant_info['cur_date']},"
             f"{result['trial']},"
             f"{result['phase']},"

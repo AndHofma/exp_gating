@@ -3,13 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="C:\Users\Andrea Hofmann\OneDrive\PhD\exp_cognitive-test-battery\MET\wav_file_names.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\randomization_lists\randomized_practice_stimuli.csv">
           <value>
             <Attribute>
@@ -25,6 +18,13 @@
           </value>
         </entry>
         <entry key="\results\gating_test_results_subject_ID_20230515_111315.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\gating_test_results_subject_ID_20230516_103242.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

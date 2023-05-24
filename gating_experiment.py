@@ -91,11 +91,17 @@ win = create_window()
 # Initialize screen
 fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order = initialize_stimuli(win)
 
+# path setup - results per participant
+# Define the path in results for each subject
+subj_path_results = os.path.join('results', participant_info['subject'])
+# Create the directory if it doesn't exist
+if not os.path.exists(subj_path_results):
+    os.makedirs(subj_path_results)
 # Create the output files with headers and save them in results/
-practice_output_filename = os.path.join(results_path,
-                                        f"gating_practice_results_{participant_info['Subject_ID']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv")
-test_output_filename = os.path.join(results_path,
-                                    f"gating_test_results_{participant_info['Subject_ID']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv")
+practice_output_filename = os.path.join(subj_path_results,
+                                        f"gating_practice_results_{participant_info['subject']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv")
+test_output_filename = os.path.join(subj_path_results,
+                                    f"gating_test_results_{participant_info['subject']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv")
 
 for output_file in [practice_output_filename, test_output_filename]:
     with open(output_file, 'w') as file:
@@ -134,7 +140,7 @@ for stimulus_file in randomized_practice_stimuli:
     # Store trial data
     results.append({
         'experiment': participant_info['experiment'],
-        'subject_ID': participant_info['Subject_ID'],
+        'subject_ID': participant_info['subject'],
         'date': participant_info['cur_date'],
         'trial': trial_counter,
         'phase': 'practice',
@@ -182,7 +188,7 @@ for stimulus_file in randomized_test_stimuli:
     # Store trial data
     results.append({
         'experiment': participant_info['experiment'],
-        'subject_ID': participant_info['Subject_ID'],
+        'subject_ID': participant_info['subject'],
         'date': participant_info['cur_date'],
         'trial': trial_counter,
         'phase': 'test',
