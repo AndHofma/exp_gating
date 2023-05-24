@@ -82,9 +82,9 @@ original_test_set = set(test_stimuli)
 randomized_test_set = set(randomized_test_stimuli)
 assert original_test_set == randomized_test_set, "The original and randomized test stimuli are not the same"
 
+
 # Get participant information
 participant_info = get_participant_info()
-
 # Create the window
 win = create_window()
 
