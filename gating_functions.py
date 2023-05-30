@@ -50,7 +50,7 @@ def present_trial(win, fixation_cross, bracket_pic, nobracket_pic, gated_stimulu
     return response_key
 
 
-def show_message(win, message, wait_for_keypress=True, duration=1):
+def show_message(win, message, wait_for_keypress=True, duration=1, text_height=0.1):
     """
     Show a message on the screen.
 
@@ -58,8 +58,9 @@ def show_message(win, message, wait_for_keypress=True, duration=1):
     message (str): The message to display.
     wait_for_keypress (bool, optional): Whether to wait for a keypress. Defaults to True.
     duration (float, optional): Time in seconds to wait if wait_for_keypress is False. Defaults to 1.
+    text_height (float, optional): The height of the text. Defaults to 0.1.
     """
-    text_stim = visual.TextStim(win, text=message, wrapWidth=2, height=0.1, color="black")
+    text_stim = visual.TextStim(win, text=message, wrapWidth=2, height=text_height, color="black")
     text_stim.draw()
     win.flip()
     if wait_for_keypress:

@@ -106,7 +106,7 @@ test_output_filename = os.path.join(subj_path_results,
 for output_file in [practice_output_filename, test_output_filename]:
     with open(output_file, 'w') as file:
         file.write(
-            'experiment,subject_ID,date,trial,phase,stimulus,response,accuracy,speaker,gate,name_stim,condition,bracket_pic_position,nobracket_pic_position,start_time,end_time,duration \n'
+            'experiment,subject_ID,date,trial,phase,stimulus,response,accuracy,speaker,gate,second_name,condition,bracket_pic_position,nobracket_pic_position,start_time,end_time,duration \n'
         )
 
 # Show instructions
@@ -127,7 +127,7 @@ for stimulus_file in randomized_practice_stimuli:
     correct_answer = 'left' if (stimulus_file[-10:-7] == 'nob' and nobracket_pos_label == 'left') or (stimulus_file[-10:-7] == 'bra' and bracket_pos_label == 'left') else 'right'
     accuracy = 1 if response_key == correct_answer else 0
     feedback = "Richtig!" if response_key == correct_answer else "Falsch!"
-    show_message(win, feedback, wait_for_keypress=False)
+    show_message(win, feedback, wait_for_keypress=False, text_height=0.3) # Here, height is set to 0.15
 
     # Record end time and duration
     end_time = time.time()
