@@ -18,12 +18,16 @@ Data Collection: Records participant responses, computes performance metrics, an
 the data in a structured CSV format for future analysis.
 """
 
+from psychopy import prefs
+# Set the audio library preference
+prefs.hardware['audioLib'] = ['pygame', 'pyo', 'PTB', 'sounddevice']
+# Now, import sound
+from psychopy import sound, core
 import os
 import datetime
 import time
 import pickle
 import csv
-from psychopy import core, sound
 from path_check import check_config_paths
 from configuration import create_window, initialize_stimuli, practice_stimuli_path, test_stimuli_path, results_path, pics_path, random_path, results
 from gating_functions import get_participant_info, present_trial, show_message, append_result_to_csv, get_stimulus_data
