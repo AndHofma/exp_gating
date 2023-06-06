@@ -1,3 +1,4 @@
+# set-up
 from psychopy import monitors, visual
 import random
 import os
