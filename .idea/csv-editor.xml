@@ -3,6 +3,20 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="C:\Users\Andrea Hofmann\Downloads\randomization_lists_gating\randomization_lists\randomized_practice_stimuli.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\Andrea Hofmann\Downloads\randomization_lists_gating\randomization_lists\randomized_test_stimuli.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\randomization_lists\randomized_practice_stimuli.csv">
           <value>
             <Attribute>
@@ -11,6 +25,13 @@
           </value>
         </entry>
         <entry key="\randomization_lists\randomized_test_stimuli.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\gating_test_results_runa_20230524_171533.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
