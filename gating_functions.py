@@ -12,7 +12,7 @@ from randomization import get_stimulus_data
 from psychopy.hardware import keyboard
 
 
-def present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb):
+def present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb, audio_pic):
     """
     Present a trial with the given gated stimulus and pictograms order.
 
@@ -25,9 +25,15 @@ def present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stim
     float: The reaction time in seconds.
     """
     fixation_cross.draw()
+    window.flip()
+    core.wait(1.0)
+    window.flip()
+
+    audio_pic.draw()
     gated_stimulus.play()
     window.flip()
-    core.wait(gated_stimulus.getDuration() + 0.2)  # wait for the duration of the sound + 200ms
+
+    core.wait(gated_stimulus.getDuration() + 0.5)  # wait for the duration of the sound + 500ms
 
     bracket_pic.draw()
     nobracket_pic.draw()
@@ -66,7 +72,7 @@ def show_message(window, message, wait_for_keypress=True, duration=1, text_heigh
 
 
 def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixation_cross, bracket_pic, nobracket_pic,
-                    window, nobracket_pos_label, bracket_pos_label):
+                    window, nobracket_pos_label, bracket_pos_label, audio_pic):
 
     results = []
 
@@ -96,7 +102,7 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
         current_speaker = stimulus['speaker']
 
         gated_stimulus = sound.Sound(os.path.join(stimuli_path, stimulus_file))
-        response_key, reaction_time = present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb)
+        response_key, reaction_time = present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb, audio_pic)
 
         # Determine correct answer and accuracy
         correct_answer = 'left' if (stimulus['condition'] == 'nob' and nobracket_pos_label == 'left') or (

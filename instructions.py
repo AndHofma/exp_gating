@@ -14,7 +14,7 @@ Drücken Sie die Eingabetaste (Enter), um mit den Übungsbeispielen zu beginnen.
 test = """
 Das waren die Übungsbeispiele. \n
 Falls Sie noch Fragen haben, geben Sie bitte der Versuchsleiterin Bescheid.
-Es gibt vier Blöcke und jeder Block dauert ca. 3 Minuten.  \n
+Es gibt vier Blöcke und jeder Block dauert ca. 4 Minuten.  \n
 Drücken Sie die Eingabetaste (Enter), um mit dem Experiment zu starten.
 """
 

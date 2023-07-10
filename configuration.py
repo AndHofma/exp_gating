@@ -101,11 +101,16 @@ def initialize_stimuli(window):
                                      pos=positions[0]
                                      )
 
+    audio_pic = visual.ImageStim(window,
+                                 image=pics_path + 'audio.png',
+                                 pos=(0, 0),
+                                 name='audio_pic')
+
     # Labels for the positions
     bracket_pos_label = labels[1]
     nobracket_pos_label = labels[0]
 
-    return fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order
+    return fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order, audio_pic
 
 
 def get_participant_info():

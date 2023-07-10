@@ -38,20 +38,20 @@ test_stimuli = load_and_randomize(test_stimuli_path, participant_info)
 window = create_window()
 
 # Initialize screen
-fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order = initialize_stimuli(window)
+fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order, audio_pic = initialize_stimuli(window)
 
 # Show instructions
 show_message(window, begin)
 window.flip()
 
 # Run practice phase
-run_trial_phase(practice_stimuli, 'practice', participant_info, practice_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label)
+run_trial_phase(practice_stimuli, 'practice', participant_info, practice_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
 
 # Show test start instructions
 show_message(window, test)
 
 # Run test phase
-run_trial_phase(test_stimuli, 'test', participant_info, test_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label)
+run_trial_phase(test_stimuli, 'test', participant_info, test_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
 
 # Show end screen
 show_message(window, end)
