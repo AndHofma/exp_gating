@@ -31,6 +31,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\randomization_lists\subject_ID\subject_ID_2023-07-10 12-14_randomized_gating_stimuli.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\randomization_lists\subject_ID\subject_ID_2023-07-10_12-34_randomized_gating_stimuli.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\results\gating_test_results_runa_20230524_171533.csv">
           <value>
             <Attribute>
@@ -46,6 +60,20 @@
           </value>
         </entry>
         <entry key="\results\gating_test_results_subject_ID_20230516_103242.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\test_gating_experiment_subject_ID_20230707_162003.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\test_gating_experiment_subject_ID_20230710_123029.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

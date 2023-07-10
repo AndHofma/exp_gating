@@ -1,7 +1,9 @@
 # set-up
-from psychopy import monitors, visual
+from psychopy import monitors, visual, gui, core
 import random
 import os
+import datetime
+import csv
 
 
 # Setup paths
@@ -10,9 +12,6 @@ practice_stimuli_path = 'stimuli/gated/practice/'
 results_path = 'results/'
 pics_path = 'pics/'
 random_path = 'randomization_lists/'
-
-# Results list
-results = []
 
 
 # def create_window():
@@ -55,12 +54,12 @@ def create_window():
                         )
 
 
-def initialize_stimuli(win):
+def initialize_stimuli(window):
     """
     Initialize textstim, pics and fixation cross.
 
     Parameters:
-    win : A PsychoPy visual.Window object where the stimuli will be displayed.
+    window : A PsychoPy visual.Window object where the stimuli will be displayed.
 
     Returns:
     fixation_cross : A PsychoPy visual.ShapeStim object, a fixation cross.
@@ -83,7 +82,7 @@ def initialize_stimuli(win):
     pictograms_order = [os.path.join(pics_path, 'no_bracket.png'), os.path.join(pics_path, 'bracket.png')]
 
     # Create fixation cross
-    fixation_cross = visual.ShapeStim(win,
+    fixation_cross = visual.ShapeStim(window,
                                       vertices=((0, -0.13), (0, 0.13), (0, 0), (-0.09, 0), (0.09, 0)),
                                       lineWidth=15,
                                       closeShape=False,
@@ -92,12 +91,12 @@ def initialize_stimuli(win):
                                       )
 
     # Create pictograms
-    bracket_pic = visual.ImageStim(win,
+    bracket_pic = visual.ImageStim(window,
                                    image=pictograms_order[1],
                                    pos=positions[1]
                                    )
 
-    nobracket_pic = visual.ImageStim(win,
+    nobracket_pic = visual.ImageStim(window,
                                      image=pictograms_order[0],
                                      pos=positions[0]
                                      )
@@ -107,3 +106,46 @@ def initialize_stimuli(win):
     nobracket_pos_label = labels[0]
 
     return fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order
+
+
+def get_participant_info():
+    """
+    Open a dialogue box with 3 fields: current date and time, subject_ID and experiment name.
+    Returns a dictionary with the entered information.
+    """
+    exp_data = {
+        'experiment': 'gating_experiment',
+        'cur_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        'subject': 'subject_ID'
+    }
+    # Dialogue box to get participant information
+    info_dialog = gui.DlgFromDict(dictionary=exp_data,
+                                  title='Gating Experiment',
+                                  fixed=['experiment','cur_date']
+                                  )
+
+    if info_dialog.OK:
+        return exp_data
+    else:
+        core.quit()
+
+
+# Function to append a single result to the CSV file
+def append_result_to_csv(result, output_filename):
+    """
+    Appends the result of a trial to the appropriate CSV file (practice or test phase).
+
+    Parameters:
+    result (dict): A dictionary containing the data for a single trial.
+    output_filename (str): The path of the CSV file for storing phase results.
+
+    The function writes the trial data, including phase, stimulus, response, accuracy, and timing info, to the CSV file.
+    """
+    # Check if file exists to write headers
+    file_exists = os.path.isfile(output_filename)
+
+    with open(output_filename, 'a') as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=result.keys())
+        if not file_exists:
+            writer.writeheader()  # File doesn't exist yet, so write a header
+        writer.writerow(result)

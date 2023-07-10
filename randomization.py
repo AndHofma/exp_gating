@@ -18,150 +18,169 @@ if they are from the same speaker with the same name and condition.
 import os
 import random
 from collections import defaultdict
+import csv
 
 
-def load_stimuli(path):
+def load_stimuli(stimuli_path):
     """
     Loads stimuli files from a given directory.
 
     Parameters:
-    path (str): Path to directory containing the stimuli files.
+    stimuli_path (str): Path to directory containing the stimuli files.
 
     Returns:
     list: A list of stimuli filenames.
     """
     # Use a list comprehension to get all '.wav' files in the directory
-    return [f for f in os.listdir(path) if f.endswith('.wav')]
+    return [f for f in os.listdir(stimuli_path) if f.endswith('.wav')]
 
 
-def group_stimuli(stimuli):
+def randomize_stimuli(stimuli_files, practice_files=None):
     """
-    Groups stimuli by speaker.
+    Randomize a list of stimuli files given certain constraints.
 
-    Parameters:
-    stimuli (list): List of stimuli filenames.
+    Args:
+    stimuli_files (list of str): List of stimuli file names.
 
     Returns:
-    dict: A dictionary with speaker names as keys and lists of their stimuli as values.
+    list of str: Randomized list of stimuli files.
     """
-    groups = defaultdict(list)  # Use defaultdict to automatically create new keys as needed
-    for stimulus in stimuli:
-        speaker = stimulus[:2]  # Get speaker name from filename
-        groups[speaker].append(stimulus)  # Add stimulus to the speaker's list
+    # If practice_files is provided, just shuffle them
+    if practice_files is not None:
+        random.shuffle(stimuli_files)
+        randomized_stimuli = stimuli_files
 
-    return groups
+    else:
+        # Extract stimulus data for each file
+        stimulus_data = [get_stimulus_data(file) for file in stimuli_files]
 
+        # Group by speaker
+        speakers = defaultdict(list)
+        for data in stimulus_data:
+            speakers[data['speaker']].append(data)
 
-def shuffle_stimuli(stimuli):
-    """
-    Shuffles stimuli in-place.
+        # Randomize order of speakers
+        speaker_order = list(speakers.keys())
+        random.shuffle(speaker_order)
 
-    Parameters:
-    stimuli (list): List of stimuli filenames.
+        # Initialize list to store the final order of stimuli
+        randomized_stimuli_data = []
 
-    Returns:
-    list: List of shuffled stimuli filenames.
-    """
-    # Use random.shuffle for in-place shuffling
-    random.shuffle(stimuli)
-    return stimuli
+        # Iterate over speakers in randomized order
+        for speaker in speaker_order:
+            # Separate out gate 7 stimuli
+            gate7_stimuli = [data for data in speakers[speaker] if data['gate'] == '7']
+            other_stimuli = [data for data in speakers[speaker] if data['gate'] != '7']
 
+            # Randomly order other stimuli with constraints
+            other_stimuli_ordered = constraint_randomization(other_stimuli)
 
-def rearrange(stimuli, condition_limit=4, gate_limit=3):
-    """
-    Rearranges stimuli to avoid exceeding the condition limit or gate limit for consecutive stimuli.
+            # Randomly order gate 7 stimuli with constraints
+            gate7_stimuli_ordered = constraint_randomization(gate7_stimuli)
 
-    Parameters:
-    stimuli (list): List of stimuli filenames.
-    condition_limit (int): Maximum number of consecutive stimuli with the same condition.
-    gate_limit (int): Maximum number of consecutive stimuli with the same gate.
+            # Append stimuli to final list
+            randomized_stimuli_data.extend(other_stimuli_ordered + gate7_stimuli_ordered)
 
-    Returns:
-    list: List of rearranged stimuli filenames.
-    """
-    rearranged = stimuli.copy()  # Create a copy of the stimuli list to rearrange
-
-    # Stage 1: Handle condition limit
-    for i in range(len(rearranged)):
-        condition_count = 1  # Initialize condition count
-
-        # Check subsequent stimuli for the same condition
-        for j in range(i + 1, len(rearranged)):
-            # If the current stimulus has the same condition as the previous, increment condition count
-            if rearranged[j][-10:-7] == rearranged[i][-10:-7]:
-                condition_count += 1
-            else:
-                # Reset condition count if the condition changes
-                condition_count = 1
-
-            # If the condition limit is reached, find a stimulus with a different condition to swap
-            if condition_count > condition_limit:
-                swapped = False  # Flag to track whether a suitable swap candidate was found
-                for k in range(j + 1, len(rearranged)):
-                    # If a stimulus with a different condition is found, swap it with the current stimulus
-                    if rearranged[k][-10:-7] != rearranged[j][-10:-7]:
-                        rearranged[j], rearranged[k] = rearranged[k], rearranged[j]
-                        swapped = True
-                        break  # Break out of the loop once a swap is made
-
-                # If no suitable swap candidate is found, break out of the loop
-                if not swapped:
-                    break
-
-    # Stage 2: Handle gate limit and special rule for gates 5, 6, and 7
-    for i in range(len(rearranged)):
-        gate_count = 1  # Initialize gate count
-        prev_gate = int(rearranged[i][-5])  # Get the gate of the first stimulus
-
-        # Check subsequent stimuli for the same gate
-        for j in range(i + 1, len(rearranged)):
-            curr_gate = int(rearranged[j][-5])  # Get the gate of the current stimulus
-            if curr_gate == prev_gate:
-                gate_count += 1  # If the current gate is the same as the previous, increment gate count
-            else:
-                gate_count = 1  # Reset gate count if the gate changes
-                prev_gate = curr_gate
-
-            # If the gate limit is reached or the special rule for gates 5, 6, and 7 is violated, find a stimulus with a different gate to swap
-            if gate_count > gate_limit or (
-                    prev_gate in {5, 6, 7} and curr_gate in {5, 6, 7} and rearranged[j][:2] == rearranged[i][:2] and
-                    rearranged[j][-10:-7] == rearranged[i][-10:-7]):
-                swapped = False  # Flag to track whether a suitable swap candidate was found
-                for k in range(j + 1, len(rearranged)):
-                    # If a stimulus with a different gate is found or a stimulus not violating the special rule is found, swap it with the current stimulus
-                    if rearranged[k][-5] != rearranged[j][-5] or (
-                            curr_gate in {5, 6, 7} and int(rearranged[k][-5]) not in {5, 6, 7}):
-                        rearranged[j], rearranged[k] = rearranged[k], rearranged[j]
-                        swapped = True
-                        break  # Break out of the loop once a swap is made
-
-                # If no suitable swap candidate is found, break out of the loop
-                if not swapped:
-                    break
-
-    return rearranged
-
-
-def create_randomized_stimuli(path):
-    """
-    Creates a randomized list of stimuli while maintaining certain constraints.
-
-    Parameters:
-    path (str): Path to directory containing the stimuli files.
-
-    Returns:
-    list: List of randomized stimuli filenames.
-    """
-    # Load and group stimuli by speaker
-    stimuli = load_stimuli(path)
-    random.seed(666)
-    groups = group_stimuli(stimuli)
-
-    randomized_stimuli = []
-    # Shuffle and rearrange each speaker's stimuli
-    for speaker, stimuli in groups.items():
-        shuffled = shuffle_stimuli(stimuli)
-        rearranged = rearrange(shuffled)
-        randomized_stimuli.extend(rearranged)  # Add the rearranged stimuli to the final list
+        # Now, extract the filenames from the data
+        randomized_stimuli = [data['filename'] for data in randomized_stimuli_data]
 
     return randomized_stimuli
+
+
+def constraint_randomization(stimuli_files):
+    """
+    Apply constraint randomization: Not more than 3 of the same condition,
+    name_stim or gate should be played.
+
+    Args:
+    stimuli (list of dict): List of stimuli data.
+
+    Returns:
+    list of dict: Randomized list of stimuli data.
+    """
+    stimuli_copy = stimuli_files.copy()
+    random.shuffle(stimuli_copy)
+
+    randomized_stimuli = []
+    while stimuli_copy:
+        valid_stimulus_found = False
+        for stimulus in stimuli_copy:
+            if (
+                sum(stim['condition'] == stimulus['condition'] for stim in randomized_stimuli) < 4 and
+                sum(stim['name_stim'] == stimulus['name_stim'] for stim in randomized_stimuli) < 2 and
+                sum(stim['gate'] == stimulus['gate'] for stim in randomized_stimuli) < 4
+            ):
+                randomized_stimuli.append(stimulus)
+                stimuli_copy.remove(stimulus)
+                valid_stimulus_found = True
+                break
+        if not valid_stimulus_found:
+            print(
+                "Warning: Constraints cannot be satisfied for remaining stimuli. Adding remaining stimuli in random order.")
+            randomized_stimuli.extend(stimuli_copy)
+            break
+    return randomized_stimuli
+
+
+def save_randomized_stimuli(randomized_stimuli, participant_info):
+    """
+    Save randomized stimuli as a csv file for a participant.
+
+    Args:
+    randomized_stimuli (list of str): List of randomized stimuli file names.
+    participant_info (dict): Participant information from get_participant_info().
+    """
+    # Create a directory for this participant if it doesn't exist
+    directory = os.path.join('randomization_lists', participant_info['subject'])
+    os.makedirs(directory, exist_ok=True)
+
+    # Define file path
+    filename = f"{participant_info['subject']}_{participant_info['cur_date'].replace(':', '-').replace(' ', '_')}_randomized_gating_stimuli.csv"
+    filepath = os.path.join(directory, filename)
+
+    # Write csv file
+    with open(filepath, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["filename"])  # header
+        for row in randomized_stimuli:
+            writer.writerow([row])
+    print(f"Saved randomized stimuli to {filepath}")
+
+
+def load_and_randomize(stimuli_path, participant_info):
+    """
+    Load stimuli files from a directory, randomize them,
+    get participant info and save the randomized stimuli.
+
+    Args:
+    stimuli_path (str): Path to directory containing the stimuli files.
+    """
+    # Load stimuli files
+    stimuli_files = load_stimuli(stimuli_path)
+
+    # Randomize stimuli
+    randomized_stimuli = randomize_stimuli(stimuli_files)
+
+    # Save randomized stimuli
+    save_randomized_stimuli(randomized_stimuli, participant_info)
+
+    return randomized_stimuli
+
+
+def get_stimulus_data(stimulus_file):
+    """
+    Extract properties from the stimulus file name.
+
+    Args:
+    stimulus_file (str): Name of the stimulus file.
+
+    Returns:
+    dict: Properties extracted from the stimulus file name.
+    """
+    return {
+        'filename': stimulus_file,  # Include the filename in the data
+        'speaker': stimulus_file[:2],
+        'gate': stimulus_file[-5],
+        'name_stim': stimulus_file[14:19],
+        'condition': stimulus_file[-10:-7]
+    }

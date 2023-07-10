@@ -1,27 +1,24 @@
 # Instructions
 begin = """
 Willkommen zum Verständnis-Experiment \n
-Sie hören nachfolgend Aufnahmen der Ihnen bekannten Namenssequenzen: 
-(Mimmi und Moni und Lola) / (Mimmi und Moni) und Lola usw.
-Die Namenssequenzen sind unterschiedlich lang.
-Das heißt, Sie hören z.B. nur: "Mi", "Mimmi und" oder "Mimmi und Mo"
-und gleich danach sehen Sie die beiden bekannten Piktogramme.
-Bitte entscheiden Sie, welches Piktogramm am besten zur Sequenz passt, die Sie gehört haben.
-Drücken Sie den entsprechenen Button auf der Buttonbox. \n  
-Drücken Sie nun einen Button, um zu den Übungsbeispielen zu gelangen."""
+Sie hören unterschiedlich lange Aufnahmen der Ihnen bekannten Namenssequenzen (z.B. "Mimmi" oder "Mimmi und Mo").
+Gleich danach sehen Sie zwei Piktogramme:
+1. Drei Strichfiguren zusammen - alle drei kommen gemeinsam.
+2. Zwei Stichfiguren zusammen, eine Dritte allein - zwei kommen gemeinsam, eine allein.
+Bitte entscheiden Sie, welches Piktogramm am besten zur Sequenz passt.
+Drücken Sie den Pfeil nach links auf der Tastatur, für das linke Piktogramm.
+Drücken Sie den Pfeil nach rechts auf der Tastatur, für das rechte Piktogramm. \n  
+Drücken Sie die Eingabetaste (Enter), um mit den Übungsbeispielen zu beginnen.
+"""
 
 test = """
-Nun startet der eigentliche Test.
-Er wird insgesamt ca. 20 Minuten dauern.
-Nach der Hälfte der Zeit haben Sie die Möglichkeit, eine Pause zu machen.
-Wenn Sie noch Fragen haben, bitte geben Sie der Versuchsleiterin Bescheid. \n
-Wenn Sie bereit sind, drücken Sie eine Taste."""
-
-halftime = """
-Die Hälfte ist geschafft. 
-Sie können eine Pause machen. 
-Sobald Sie weitermachen möchten, drücken Sie einen Button."""
+Das waren die Übungsbeispiele. \n
+Falls Sie noch Fragen haben, geben Sie bitte der Versuchsleiterin Bescheid.
+Es gibt vier Blöcke und jeder Block dauert ca. 3 Minuten.  \n
+Drücken Sie die Eingabetaste (Enter), um mit dem Experiment zu starten.
+"""
 
 end = """
 Geschafft!\n
-Drücken Sie einen Button, um den Test abzuschließen."""
+Drücken Sie die Eingabetaste (Enter), um das Experiment zu beenden.
+"""

@@ -1,30 +1,18 @@
-from psychopy import core, event, gui, visual
+# Import necessary libraries
+from psychopy import prefs
+# Set the audio library preference
+prefs.hardware['audioLib'] = ['ptb', 'sounddevice', 'pygame', 'pyo']
+# Now, import sound
+from psychopy import sound, core, event, visual
+import os
 import datetime
+import time
+from configuration import append_result_to_csv
+from randomization import get_stimulus_data
+from psychopy.hardware import keyboard
 
 
-def get_participant_info():
-    """
-    Open a dialogue box with 3 fields: current date and time, subject_ID and experiment name.
-    Returns a dictionary with the entered information.
-    """
-    exp_data = {
-        'experiment': 'gating_experiment',
-        'cur_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-        'subject': 'subject_ID'
-    }
-    # Dialogue box to get participant information
-    info_dialog = gui.DlgFromDict(dictionary=exp_data,
-                                  title='Gating Experiment',
-                                  fixed=['experiment','cur_date']
-                                  )
-
-    if info_dialog.OK:
-        return exp_data
-    else:
-        core.quit()
-
-
-def present_trial(win, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus):
+def present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb):
     """
     Present a trial with the given gated stimulus and pictograms order.
 
@@ -34,23 +22,31 @@ def present_trial(win, fixation_cross, bracket_pic, nobracket_pic, gated_stimulu
 
     Returns:
     str: The response key ('left' or 'right').
+    float: The reaction time in seconds.
     """
     fixation_cross.draw()
     gated_stimulus.play()
-    win.flip()
-    core.wait(gated_stimulus.getDuration()+0.2)  # wait for the duration of the sound + 200ms
+    window.flip()
+    core.wait(gated_stimulus.getDuration() + 0.2)  # wait for the duration of the sound + 200ms
 
     bracket_pic.draw()
     nobracket_pic.draw()
-    win.flip()
-    response_key = event.waitKeys(keyList=['left', 'right'])[0]
-    win.flip()
-    core.wait(2)
+    window.flip()
+    kb.clearEvents()  # clear the keyboard buffer
+    kb.clock.reset()  # reset the clock
+    keys = kb.waitKeys(keyList=['left', 'right'])  # wait until a key is pressed
 
-    return response_key
+    # Since waitKeys() waits for a key press, we can be sure that there is at least one key press
+    response_key = keys[0].name  # get the name of the key that was pressed
+    reaction_time = keys[0].rt  # get the reaction time
+
+    window.flip()
+    core.wait(1)
+
+    return response_key, reaction_time
 
 
-def show_message(win, message, wait_for_keypress=True, duration=1, text_height=0.1):
+def show_message(window, message, wait_for_keypress=True, duration=1, text_height=0.1):
     """
     Show a message on the screen.
 
@@ -60,65 +56,95 @@ def show_message(win, message, wait_for_keypress=True, duration=1, text_height=0
     duration (float, optional): Time in seconds to wait if wait_for_keypress is False. Defaults to 1.
     text_height (float, optional): The height of the text. Defaults to 0.1.
     """
-    text_stim = visual.TextStim(win, text=message, wrapWidth=2, height=text_height, color="black")
+    text_stim = visual.TextStim(window, text=message, wrapWidth=2, height=text_height, color="black")
     text_stim.draw()
-    win.flip()
+    window.flip()
     if wait_for_keypress:
-        event.waitKeys()
+        event.waitKeys(keyList=['return'])
     else:
         core.wait(duration)
 
 
-def get_stimulus_data(stimulus_file):
-    """
-    Extract properties from the stimulus file name.
+def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixation_cross, bracket_pic, nobracket_pic,
+                    window, nobracket_pos_label, bracket_pos_label):
 
-    Args:
-    stimulus_file (str): Name of the stimulus file.
+    results = []
 
-    Returns:
-    dict: Properties extracted from the stimulus file name.
-    """
-    return {
-        'speaker': stimulus_file[:2],
-        'gate': stimulus_file[-5],
-        'name_stim': stimulus_file[14:19],
-        'condition': stimulus_file[-10:-7]
-    }
+    kb = keyboard.Keyboard()  # Initialize the keyboard
 
+    # path setup results per participant
+    # Define the path in results for each subject
+    subj_path_results = os.path.join('results', participant_info['subject'])
+    # Create the directory if it doesn't exist
+    if not os.path.exists(subj_path_results):
+        os.makedirs(subj_path_results)
 
-# Function to append a single result to the CSV file
-def append_result_to_csv(result, practice_filename, test_filename, participant_info):
-    """
-    Appends the result of a trial to the appropriate CSV file (practice or test phase).
+    start_time = time.time()
+    start_time_str = datetime.datetime.fromtimestamp(start_time).strftime('%H:%M:%S')
+    trial_counter = 1
+    block_counter = 1
+    current_speaker = None
 
-    Parameters:
-    result (dict): A dictionary containing the data for a single trial.
-    practice_filename (str): The path of the CSV file for storing practice phase results.
-    test_filename (str): The path of the CSV file for storing test phase results.
-    participant_info (dict): A dictionary containing the participant's information.
+    for stimulus_file in stimuli_files:
+        stimulus = get_stimulus_data(stimulus_file)
 
-    The function writes the trial data, including phase, stimulus, response, accuracy, and timing info, to the CSV file.
-    """
-    output_filename = practice_filename if result['phase'] == 'practice' else test_filename
+        if phase == 'test' and current_speaker and current_speaker != stimulus['speaker']:
+            # Speaker has changed, therefore one block has ended
+            remaining_blocks = 4 - block_counter
+            show_message(window, f"Block {block_counter} geschafft - noch {remaining_blocks} Block(s) übrig. \n Drücken Sie die Eingabetaste (Enter), um weiterzumachen.")
+            block_counter += 1
+        current_speaker = stimulus['speaker']
 
-    with open(output_filename, 'a') as output_file:
-        output_file.write(
-            f"{participant_info['experiment']},"
-            f"{participant_info['subject']},"
-            f"{participant_info['cur_date']},"
-            f"{result['trial']},"
-            f"{result['phase']},"
-            f"{result['stimulus']},"
-            f"{result['response']},"
-            f"{result['accuracy']},"
-            f"{result['speaker']},"
-            f"{result['gate']},"
-            f"{result['name_stim']},"
-            f"{result['condition']},"
-            f"{result['bracket_pic_position']},"
-            f"{result['nobracket_pic_position']},"
-            f"{result['start_time']},"
-            f"{result['end_time']},"
-            f"{result['duration']}\n"
-        )
+        gated_stimulus = sound.Sound(os.path.join(stimuli_path, stimulus_file))
+        response_key, reaction_time = present_trial(window, fixation_cross, bracket_pic, nobracket_pic, gated_stimulus, kb)
+
+        # Determine correct answer and accuracy
+        correct_answer = 'left' if (stimulus['condition'] == 'nob' and nobracket_pos_label == 'left') or (
+                    stimulus['condition'] == 'bra' and bracket_pos_label == 'left') else 'right'
+        accuracy = 1 if response_key == correct_answer else 0
+
+        if phase == 'practice':
+            feedback = "Richtig!" if response_key == correct_answer else "Falsch!"
+            show_message(window, feedback, wait_for_keypress=False, text_height=0.3)
+
+        # Record end time and duration
+        end_time = time.time()
+        end_time_str = datetime.datetime.fromtimestamp(end_time).strftime('%H:%M:%S')
+        duration = end_time - start_time
+        hours, remainder = divmod(duration, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        duration_str = '{:02d}:{:02d}:{:02d}'.format(int(hours), int(minutes), int(seconds))
+
+        # Store trial data
+        results.append({
+            'experiment': participant_info['experiment'],
+            'subject_ID': participant_info['subject'],
+            'date': participant_info['cur_date'],
+            'trial': trial_counter,
+            'block': block_counter,
+            'phase': phase,
+            'stimulus': stimulus_file,
+            'response': response_key,
+            'reaction_time': reaction_time,
+            'accuracy': accuracy,
+            'speaker': stimulus['speaker'],
+            'gate': stimulus['gate'],
+            'name_stim': stimulus['name_stim'],
+            'condition': stimulus['condition'],
+            'bracket_pic_position': bracket_pos_label,
+            'nobracket_pic_position': nobracket_pos_label,
+            'start_time': start_time_str,
+            'end_time': end_time_str,
+            'duration': duration_str
+        })
+
+        # Increment trial counter
+        trial_counter += 1
+
+    # generate the base_filename based on task_name and phase
+    output_filename = f"{subj_path_results}/{phase}_{participant_info['experiment']}_{participant_info['subject']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+
+    for result in results:
+        append_result_to_csv(result, output_filename)
+
+    return results
