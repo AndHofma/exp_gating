@@ -17,20 +17,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\randomization_lists\randomized_practice_stimuli.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\randomization_lists\randomized_test_stimuli.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\randomization_lists\subject_ID\subject_ID_2023-07-10 12-14_randomized_gating_stimuli.csv">
           <value>
             <Attribute>
@@ -60,6 +46,20 @@
           </value>
         </entry>
         <entry key="\results\gating_test_results_subject_ID_20230516_103242.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\gating_test_results_subject_ID_20230524_145215.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\practice_gating_experiment_subject_ID_20230712_155550.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
