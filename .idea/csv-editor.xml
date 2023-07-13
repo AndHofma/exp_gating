@@ -31,27 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\results\gating_test_results_runa_20230524_171533.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\results\gating_test_results_subject_ID_20230515_111315.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\results\gating_test_results_subject_ID_20230516_103242.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\results\subject_ID\gating_test_results_subject_ID_20230524_145215.csv">
           <value>
             <Attribute>
@@ -60,6 +39,27 @@
           </value>
         </entry>
         <entry key="\results\subject_ID\practice_gating_experiment_subject_ID_20230712_155550.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\practice_gating_experiment_subject_ID_20230713_110158.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\practice_gating_experiment_subject_ID_20230713_110830.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\results\subject_ID\practice_gating_experiment_subject_ID_20230713_111637.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

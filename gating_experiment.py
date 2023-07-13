@@ -20,13 +20,14 @@ the data in a structured CSV format for future analysis.
 
 from psychopy import core
 from path_check import check_config_paths
-from configuration import create_window, initialize_stimuli, get_participant_info,  practice_stimuli_path, test_stimuli_path, results_path, pics_path, random_path
+from configuration import create_window, initialize_stimuli, get_participant_info,  practice_stimuli_path, \
+    test_stimuli_path, results_path, pics_path, random_path
 from gating_functions import show_message, run_trial_phase
 from instructions import begin, test, end
 from randomization import load_and_randomize
 
 # Check if input and output paths exist
-check_config_paths(test_stimuli_path, practice_stimuli_path, results_path, pics_path, random_path)  # make sure that in and out paths exist
+check_config_paths(test_stimuli_path, practice_stimuli_path, results_path, pics_path, random_path)
 
 # Get participant information
 participant_info = get_participant_info()
@@ -38,20 +39,23 @@ test_stimuli = load_and_randomize(test_stimuli_path, participant_info)
 window = create_window()
 
 # Initialize screen
-fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order, audio_pic = initialize_stimuli(window)
+fixation_cross, bracket_pic, bracket_pos_label, nobracket_pic, nobracket_pos_label, pictograms_order, \
+    audio_pic = initialize_stimuli(window)
 
 # Show instructions
 show_message(window, begin)
 window.flip()
 
 # Run practice phase
-run_trial_phase(practice_stimuli, 'practice', participant_info, practice_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
+run_trial_phase(practice_stimuli, 'practice', participant_info, practice_stimuli_path, fixation_cross, bracket_pic,
+                nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
 
 # Show test start instructions
 show_message(window, test)
 
 # Run test phase
-run_trial_phase(test_stimuli, 'test', participant_info, test_stimuli_path, fixation_cross, bracket_pic, nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
+run_trial_phase(test_stimuli, 'test', participant_info, test_stimuli_path, fixation_cross, bracket_pic,
+                nobracket_pic, window, nobracket_pos_label, bracket_pos_label, audio_pic)
 
 # Show end screen
 show_message(window, end)
