@@ -145,10 +145,10 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
     # generate the base_filename based on task_name and phase
     output_filename = f"{subj_path_results}/{phase}_{participant_info['experiment']}_{participant_info['subject']}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 
-    file_exists = os.path.isfile(output_filename)
+    file_exists = os.path.exists(output_filename)  # Check if the file already exists before entering the loop
 
     # Open file once, before the loop
-    with open(output_filename, 'a') as output_file:
+    with open(output_filename, 'a', newline='') as output_file:
         writer = csv.DictWriter(output_file, fieldnames=['experiment',
                                                          'subject_ID',
                                                          'date',
@@ -179,7 +179,7 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
                 block_counter += 1
             current_speaker = stimulus['speaker']
 
-            gated_stimulus = sound.Sound(os.path.join(stimuli_path, stimulus_file))
+            gated_stimulus = sound.Sound(os.path.join(stimuli_path, stimulus_file), sampleRate=44100)
             response_key, reaction_time = present_trial(window, fixation_cross, bracket_pic, nobracket_pic,
                                                         gated_stimulus, kb, audio_pic)
 
