@@ -31,8 +31,8 @@ from psychopy import sound, core, event, visual
 import os
 import datetime
 import time
-from configuration import append_result_to_csv
-from randomization import get_stimulus_data
+from gating_configuration import append_result_to_csv
+from gating_randomization import get_stimulus_data
 from psychopy.hardware import keyboard
 import csv
 
@@ -150,7 +150,7 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
     # Open file once, before the loop
     with open(output_filename, 'a', newline='') as output_file:
         writer = csv.DictWriter(output_file, fieldnames=['experiment',
-                                                         'subject_ID',
+                                                         'subjectID',
                                                          'date',
                                                          'trial',
                                                          'block',
@@ -203,7 +203,7 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
             # Store trial data
             trial_data = {
                 'experiment': participant_info['experiment'],
-                'subject_ID': participant_info['subject'],
+                'subjectID': participant_info['subject'],
                 'date': participant_info['cur_date'],
                 'trial': trial_counter,
                 'block': block_counter,

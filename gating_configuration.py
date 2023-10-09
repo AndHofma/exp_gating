@@ -1,5 +1,5 @@
 """
-configuration.py
+gating_configuration.py
 
 This module contains all the setup paths and several important functions required to run a gating experiment.
 
@@ -7,7 +7,7 @@ It initializes the experiment window using PsychoPy and sets up the necessary vi
 and pictograms.
 
 It also provides a function to get participant information via a dialog box, including the date and time of the
-experiment, subject_ID and the experiment name.
+experiment, subjectID and the experiment name.
 
 Finally, it includes a function to write the results of a single trial to a CSV file, creating the file if it doesn't
 exist and appending to it if it does.
@@ -30,14 +30,29 @@ from psychopy import monitors, visual, gui, core
 import random
 import os
 import datetime
+import sys
+
+
+def resource_path(relative_path):
+    """Determine and return the absolute path to the resource."""
+
+    # Check if the application is frozen (compiled)
+    if getattr(sys, 'frozen', False):
+        # If we're running as a bundled exe, set the base path as one level above the executable
+        base_path = os.path.join(os.path.dirname(sys.executable), "..")
+    else:
+        # If we're running in a normal Python environment
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(base_path, relative_path)
 
 
 # Setup paths
-test_stimuli_path = 'stimuli/gated/test/'
-practice_stimuli_path = 'stimuli/gated/practice/'
-results_path = 'results/'
-pics_path = 'pics/'
-random_path = 'randomization_lists/'
+test_stimuli_path = resource_path('stimuli/gated/test/')
+practice_stimuli_path = resource_path('stimuli/gated/practice/')
+results_path = resource_path('results/')
+pics_path = resource_path('pics/')
+random_path = resource_path('randomization/')
 
 
 # def create_window():
@@ -144,13 +159,13 @@ def initialize_stimuli(window):
 
 def get_participant_info():
     """
-    Open a dialogue box with 3 fields: current date and time, subject_ID and experiment name.
+    Open a dialogue box with 3 fields: current date and time, subjectID and experiment name.
     Returns a dictionary with the entered information.
     """
     exp_data = {
         'experiment': 'gating_experiment',
         'cur_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-        'subject': 'subject_ID'
+        'subject': 'subjectID'
     }
     # Dialogue box to get participant information
     info_dialog = gui.DlgFromDict(dictionary=exp_data,

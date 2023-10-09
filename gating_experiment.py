@@ -19,12 +19,12 @@ the data in a structured CSV format for future analysis.
 """
 
 from psychopy import core
-from path_check import check_config_paths
-from configuration import create_window, initialize_stimuli, get_participant_info,  practice_stimuli_path, \
+from gating_path_check import check_config_paths
+from gating_configuration import create_window, initialize_stimuli, get_participant_info,  practice_stimuli_path, \
     test_stimuli_path, results_path, pics_path, random_path
 from gating_functions import show_message, run_trial_phase
-from instructions import begin, test, end
-from randomization import load_and_randomize
+from gating_instructions import begin, test, end
+from gating_randomization import load_and_randomize
 
 # Check if input and output paths exist
 check_config_paths(test_stimuli_path, practice_stimuli_path, results_path, pics_path, random_path)
