@@ -175,7 +175,7 @@ def run_trial_phase(stimuli_files, phase, participant_info, stimuli_path, fixati
             if phase == 'test' and current_speaker and current_speaker != stimulus['speaker']:
                 # Speaker has changed, therefore one block has ended
                 remaining_blocks = 4 - block_counter
-                show_message(window, f"Block {block_counter} geschafft - noch {remaining_blocks} Block(s) übrig. \n Drücken Sie die Eingabetaste (Enter), um weiterzumachen.")
+                show_message(window, f"Block {block_counter} geschafft - noch {remaining_blocks} Block(s) übrig. \n Sie können eine Pause machen, wenn Sie dies wünschen. Drücken Sie die Eingabetaste (Enter), um weiterzumachen.")
                 block_counter += 1
             current_speaker = stimulus['speaker']
 

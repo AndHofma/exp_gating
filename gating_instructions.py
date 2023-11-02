@@ -34,7 +34,8 @@ Example:
 # Instructions
 begin = """
 Willkommen zum Verständnis-Experiment \n
-Sie hören unterschiedlich lange Aufnahmen der Ihnen bekannten Namenssequenzen (z.B. "Mimmi" oder "Mimmi und Mo").
+Sie hören unterschiedlich lange Aufnahmen der Ihnen bekannten Namenssequenzen.
+Sie hören zum Beispiel: "Mimmi" oder Sie hören "Mimmi und Mo" etc..
 Gleich danach sehen Sie zwei Piktogramme:
 1. Drei Figuren zusammen - alle drei kommen gemeinsam.
 2. Zwei Figuren zusammen, eine allein - zwei kommen gemeinsam, eine allein.
@@ -48,6 +49,7 @@ test = """
 Das waren die Übungsbeispiele. \n
 Falls Sie noch Fragen haben, geben Sie bitte der Versuchsleiterin Bescheid.
 Es gibt vier Blöcke und jeder Block dauert ca. 4 Minuten.  \n
+Sie können nach jedem Block eine Pause machen, wenn Sie das wünschen. \n
 Drücken Sie die Eingabetaste (Enter), um mit dem Experiment zu starten.
 """
 
